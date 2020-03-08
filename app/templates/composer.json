@@ -1,0 +1,38 @@
+{
+  "name": "<%= slug %>",
+  "description": "<%= descriptionEscaped %>",
+  "homepage": "<%= homepage %>",
+  "license": "<%= license %>",
+  "type": "wordpress-plugin",
+  "minimum-stability": "dev",
+  "authors": [
+  {
+    "name": "<%= author %>",
+    "homepage": "<%= authorurl %>"
+  }
+  ],
+  "require": {
+    "automattic/jetpack-autoloader": "1.2.0"
+  },
+  "require-dev": {
+     "brain/monkey": "^2.3",
+     "phpunit/phpunit": "^8.4",
+     "woocommerce/woocommerce-sniffs": "0.0.9", 
+     "wp-cli/i18n-command": "^2.2", 
+     "wp-coding-standards/wpcs": "^2.2"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "composer dump-autoload"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "<%= namespace %>\\": "src", 
+      "PluginTests\\" : "tests/"
+    }
+  }
+}

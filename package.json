@@ -1,0 +1,29 @@
+{
+  "name": "generator-plugin-scaffold",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Yeoman generator for a PSR-4 WordPress plugin using the Jetpack Autoloader",
+  "author": {
+    "name": "RedPandaVentures",
+    "url": "https://github.com/redpandaventures/generator-plugin-scaffold"
+  },
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "github-download": "^0.5.0",
+    "request": "^2.88.2",
+    "update-notifier": "^4.1.0",
+    "yeoman-generator": "^1.0.0",
+    "yo": "^3.1.1",
+    "yosay": "^2.0.2"
+  },
+  "devDependencies": {
+    "fs-extra": "^0.16.5",
+    "mocha": "*"
+  }
+}
