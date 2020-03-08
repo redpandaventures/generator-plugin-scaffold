@@ -17,7 +17,7 @@ module.exports = class extends Generator {
   }
 
 	// Escape double quotes. 
-	_escapeDoubleQuotes() {
+	_escapeDoubleQuotes( s ) {
 		return s.replace( /"/g, '\\"');
 	}
 
@@ -52,12 +52,6 @@ module.exports = class extends Generator {
 	    // Grab package.json.
 	    this.pkg = require('../package.json');
 
-	    // Set the initial value.
-	    this.currentVersionWP = '5.6.0';
-
-	    // Get the latest WP version.
-	    this._getLatestWPVersion();
-
 	    // Set Composer to false.
 	    this.autoloaderList = ['Basic', 'None'];
 
@@ -67,259 +61,206 @@ module.exports = class extends Generator {
 
   	}
 
-	promptUser() {
-		var done = this.async();
+	async promptUser() {
 
 		// Have Yeoman greet the user.
 		this.log( yosay(
-		  'Welcome to the neat ' + chalk.red('Plugin Scaffold') + ' generator!'
+		  'Welcome to the sweet ' + chalk.red('Plugin Scaffold') + ' generator!'
 		));
 
 		// Set up all our prompts.
-		var prompts = [{
+		this.answers = await this.prompt([
+		{
 		  type   : 'input',
 		  name   : 'name',
 		  message: 'Name',
 		  default: 'RPV Plugin Name'
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'homepage',
 		  message: 'Homepage',
 		  default: 'https://redpandaventures.com',
 		  store: true
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'description',
 		  message: 'Description',
 		  default: 'A PSR-4 based plugin for WordPress!'
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'version',
 		  message: 'Version',
 		  default: '0.0.0'
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'author',
 		  message: 'Author',
 		  default: 'RedPandaVentures',
 		  save   : true,
 		  store: true
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'authoremail',
 		  message: 'Author Email',
 		  default: 'contact@redpandaventures.com',
 		  save   : true,
 		  store: true
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'authorurl',
 		  message: 'Author URL',
 		  default: 'https://redpandaventures.com',
 		  save   : true,
 		  store: true
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'license',
 		  message: 'License',
 		  default: 'GPLv2',
 		  save   : true,
 		  store  : true
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'licenseuri',
 		  message: 'License URI',
 		  default: 'http://www.gnu.org/licenses/gpl-2.0.html',
 		  save   : true,
 		  store  : true
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'slug',
 		  message: 'Plugin Slug',
 		  default: 'plugin-slug', 
 		  save   : true,
 		  store  : true	  
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'namespace',
 		  message: 'Namespace',
 		  default: 'RedPandaVentures',
 		  save   : true,
 		  store  : true
-		}, {
+		}, 
+		{
 		  type   : 'input',
 		  name   : 'constant',
 		  message: 'Constant Variables',
 		  default: 'SLUG',
 		  save   : true,
 		  store  : true
-		}];
+		}
+		]);
 
-		 // Sanitize inputs.
-		this.prompt( prompts, function (props) {
-		  this.name               = this._.clean( props.name );
-		  this.homepage           = this._.clean( props.homepage );
-		  this.description        = this._.clean( props.description );
-		  this.descriptionEscaped = this._escapeDoubleQuotes( this.description );
-		  this.version            = this._.clean( props.version );
-		  this.author             = this._.clean( props.author );
-		  this.authoremail        = this._.clean( props.authoremail );
-		  this.authorurl          = this._.clean( props.authorurl );
-		  this.license            = this._.clean( props.license );
-		  this.licenseuri         = this._.clean( props.licenseuri );
-		  this.slug               = this._.slugify( props.slug );
-		  this.namespace          = this._.clean( props.namespace );
-		  this.year               = new Date().getFullYear();
-		  
-		  // All done.
-		  done();
-		}.bind(this));
+		this.answers.descriptionEscaped = this._escapeDoubleQuotes( this.answers.description ); 
+		this.answers.year = new Date().getFullYear();
+		this.answers.currentVersionWP = this._getLatestWPVersion();
 	}
 
-  	// Create the plugin directory 
-	createPluginDir(){
-	  var done = this.async();
 
-	  // Grab our destination path folder.
-	  fs.lstat( this.destinationPath( this.slug ), function(err, stats) {
+  	// Writing  
+	async writing(){
 
-	    // If its not an error, but it exists, flag that to the user.
-	    if (!err && stats.isDirectory()) {
-	      this.log( chalk.red( 'A plugin already exists with this folder name, exiting...' ) );
-	      process.exit();
-	    }
+		this.log( chalk.green( 'Creating plugin directory...' ) );
 
-	    // Set our destination to our slug.
-	    this.destinationRoot( this.slug );
+		// Set our destination to our slug.
+		this.destinationRoot( this.answers.slug );
 
-	    // Done.
-	    done();
-	  }.bind(this));
+		// Copy the .files.  
+		this.log( chalk.green( 'copying dot files...' ) );
+		this.fs.copy(
+			this.templatePath('_babelrc'),
+			this.destinationPath('.babel')
+		);
+		this.fs.copyTpl(
+			this.templatePath('_gitignore'),
+			this.destinationPath('.gitignore'),
+			this.answers
+		);
+		this.fs.copyTpl(
+		  	this.templatePath('_editorconfig'),
+		  	this.destinationPath('.editorconfig'),
+		  	this.answers
+		);
+
+		 // Copy the dev files 
+		this.log( chalk.green( 'copying dev files...' ) );
+		this.fs.copyTpl(
+			this.templatePath('package.json'),
+			this.destinationPath('package.json'),
+			this.answers
+		);
+		this.fs.copyTpl(
+			this.templatePath('composer.json'),
+			this.destinationPath('composer.json'),
+			this.answers
+		);
+		this.fs.copy(
+			this.templatePath('Gulpfile.babel.js'),
+			this.destinationPath('Gulpfile.babel.js')
+		);
+		this.fs.copy(
+			this.templatePath('phpcs.xml'),
+			this.destinationPath('phpcs.xml')
+		);
+
+		// Copy the main plugin file. 
+		this.log( chalk.green( 'copying main plugin file' ) );
+		this.fs.copyTpl(
+			this.templatePath('plugin.php'),
+			this.destinationPath(this.answers.slug + '.php'),
+			this.answers
+		);
+
+		// Copy the readme.
+		this.fs.copyTpl(
+			this.templatePath('README.md'),
+			this.destinationPath('README.md'),
+			this.answers
+		);
+
+		// Copy the tests. 
+		this.fs.copy(
+			this.templatePath('phpunit.xml'),
+			this.destinationPath('phpunit.xml'),
+			this.answers
+		);
+		this.fs.copy(
+			this.templatePath('bin/install-wp-tests.sh'),
+			this.destinationPath('bin/install-wp-tests.sh'),
+			this.answers
+		);
+		this.fs.copyTpl(
+			this.templatePath('tests/bootstrap.php'),
+			this.destinationPath('tests/bootstrap.php'),
+			this.answers
+		);
+		this.fs.copyTpl(
+			this.templatePath('tests/test-sample.php'),
+			this.destinationPath('tests/test-sample.php'),
+			this.answers
+		);
+
+		// Copy the directories. 
+		this.fs.copyTpl(
+			this.templatePath('assets/README.md'),
+			this.destinationPath('assets/README.md'),
+			this.answers
+		);
+
+		this.fs.copyTpl(
+			this.templatePath('src'),
+			this.destinationPath('src'),
+			this.answers
+		);
 	}
-
-    // Copy the .files.  
-    dotfiles() {
-      this.fs.copy(
-        this.templatePath('_babelrc'),
-        this.destinationPath('/.babel')
-      );
-      this.fs.copyTpl(
-        this.templatePath('_gitignore'),
-        this.destinationPath('/.gitignore'),
-        this
-      );
-      this.fs.copyTpl(
-          this.templatePath('_editorconfig'),
-          this.destinationPath('/.editorconfig'),
-          this
-      );
-    }
-
-    // Copy the dev files 
-    devFiles() {
-      this.fs.copyTpl(
-        this.templatePath('package.json'),
-        this.destinationPath('/package.json'),
-        this
-      );
-      this.fs.copyTpl(
-        this.templatePath('composer.json'),
-        this.destinationPath('/composer.json'),
-        this
-      );
-      this.fs.copy(
-          this.templatePath('Gulpfile.babel.js'),
-          this.destinationPath('/Gulpfile.babel.js')
-      );
-      this.fs.copy(
-          this.templatePath('phpcs.xml'),
-          this.destinationPath('/phpcs.xml')
-      );
-    }
-
-    // Copy the main plugin file. 
-    mainFile() {
-      this.fs.copyTpl(
-        this.templatePath('plugin.php'),
-        this.destinationPath('/' + this.slug + '.php'),
-        this
-      );
-    }
-
-    // Copy the readme.
-    readme() {
-      this.fs.copyTpl(
-        this.templatePath('README.md'),
-        this.destinationPath('/README.md'),
-        this
-      );
-    }
-
-    // Copy the tests. 
-    tests() {
-      this.fs.copy(
-        this.templatePath('phpunit.xml'),
-        this.destinationPath('/phpunit.xml'),
-        this
-      );
-
-      this.fs.copy(
-        this.templatePath('bin/install-wp-tests.sh'),
-        this.destinationPath('bin/install-wp-tests.sh'),
-        this
-      );
-
-      this.fs.copyTpl(
-        this.templatePath('tests/bootstrap.php'),
-        this.destinationPath('tests/bootstrap.php'),
-        this
-      );
-
-      this.fs.copyTpl(
-        this.templatePath('tests/test-base.php'),
-        this.destinationPath('tests/test-base.php'),
-        this
-      );
-    }
-
-    // Copy the directories. 
-    directories() {
-      this.fs.copyTpl(
-        this.templatePath('assets/README.md'),
-        this.destinationPath('assets/README.md'),
-        this
-      );
-
-      this.fs.copyTpl(
-        this.templatePath('includes/README.md'),
-        this.destinationPath('includes/README.md'),
-        this
-      );
-    }
-
-    // Save the config.
-    saveConfig() {
-      this.config.set( 'name', this.name );
-      this.config.set( 'homepage', this.homepage );
-      this.config.set( 'description', this.description );
-      this.config.set( 'version', this.version );
-      this.config.set( 'author', this.author );
-      this.config.set( 'authoremail', this.authoremail );
-      this.config.set( 'authorurl', this.authorurl );
-      this.config.set( 'license', this.license );
-      this.config.set( 'licenseuri', this.licenseuri );
-      this.config.set( 'slug', this.slug );
-      this.config.set( 'classname', this.classname );
-      this.config.set( 'mainclassname', this.classname );
-      this.config.set( 'classprefix', this.classprefix );
-      this.config.set( 'prefix', this.prefix );
-      this.config.set( 'year', this.year );
-
-      this.config.set( 'currentVersionWP', this.currentVersionWP );
-
-      this.config.set( 'plugingenversion', this.plugingenversion );
-
-      this.config.save();
-    }
-
 };

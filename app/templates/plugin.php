@@ -17,7 +17,7 @@
  * @package <%= namespace %>
  * @version <%= version %>
  *
- * Built using generator-plugin-wp (https://github.com/WebDevStudios/generator-plugin-wp)
+ * Built using generator-plugin-scaffold (https://github.com/redpandaventures/generator-plugin-scaffold)
  */
 <% if ( license == 'GPLv2' ) { %>
 /**

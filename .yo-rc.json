@@ -1,0 +1,15 @@
+{
+  "generator-plugin-scaffold": {
+    "promptValues": {
+      "homepage": "https://redpandaventures.com",
+      "author": "RedPandaVentures",
+      "authoremail": "contact@redpandaventures.com",
+      "authorurl": "https://redpandaventures.com",
+      "license": "GPLv2",
+      "licenseuri": "http://www.gnu.org/licenses/gpl-2.0.html",
+      "slug": "plugin-slug",
+      "namespace": "RedPandaVentures",
+      "constant": "SLUG"
+    }
+  }
+}

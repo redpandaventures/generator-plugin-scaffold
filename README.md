@@ -23,7 +23,7 @@ npm install -g generator-plugin-scaffold
 To use generator-plugin-scaffold, `cd` to your WordPress plugins folder and:
 
 ```bash
-yo plugin-wp
+yo plugin-scaffold
 ```
 You'll be prompted with steps for creating your plugin.
 
