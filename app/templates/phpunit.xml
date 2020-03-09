@@ -1,20 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <phpunit
-	bootstrap="unit-tests/Bootstrap.php"
+	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
-	verbose="true"
-	syntaxCheck="true"
 	>
 	<testsuites>
-		<testsuite name="WooCommerce REST API Test Suite">
-			<directory suffix=".php">./unit-tests/Tests</directory>
-		</testsuite>
-		<testsuite name="v4">
-			<directory suffix=".php">./unit-tests/Tests/Version4</directory>
+		<testsuite>
+			<directory prefix="test-" suffix=".php">./tests/</directory>
+			<exclude>./tests/test-sample.php</exclude>
 		</testsuite>
 	</testsuites>
 </phpunit>

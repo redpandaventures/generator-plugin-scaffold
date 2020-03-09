@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * The front class handles all related functions for frontend view.
+ * The front class handles all related functions for frontend.
  *
  * @since     <%= version %>
  */

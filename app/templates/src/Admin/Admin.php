@@ -23,7 +23,7 @@ class Admin {
 	 * Init hooks
 	 */
 	public function init_hooks() {
-		do_action( 'pluginscaffold_admin_loaded' );
+		do_action( '<%= slug %>_admin_loaded' );
 	}
 
 }
