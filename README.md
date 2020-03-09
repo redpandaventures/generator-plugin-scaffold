@@ -14,10 +14,17 @@ If you don't have [Yeoman](http://yeoman.io/) installed:
 npm install -g yo
 ```
 
-To install generator-plugin-wp from npm, run:
+To install generator-plugin-scaffold from npm, run: (not published yet)
 
 ```bash
 npm install -g generator-plugin-scaffold
+```
+
+
+To install generator-plugin-scaffold from git, run:
+
+```bash
+npm install -g git+ssh://git@github.com/redpandaventures/generator-plugin-scaffold
 ```
 
 To use generator-plugin-scaffold, `cd` to your WordPress plugins folder and:
