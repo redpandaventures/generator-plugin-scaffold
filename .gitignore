@@ -34,3 +34,4 @@ Session.vim
 
 # Other, add your own ignored things here.
 .idea/
+.yo-rc.json
