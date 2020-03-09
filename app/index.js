@@ -170,6 +170,8 @@ module.exports = class extends Generator {
 		this.answers.descriptionEscaped = this._escapeDoubleQuotes( this.answers.description ); 
 		this.answers.year = new Date().getFullYear();
 		this.answers.currentVersionWP = this._getLatestWPVersion();
+
+		this.config.set( 'answers', this.answers ); 
 	}
 
 
@@ -194,7 +196,7 @@ module.exports = class extends Generator {
 
 		// Copy the main plugin files. 
 		this.log( chalk.green( 'Moving Plugin files' ) );
-        this.filesPlugin.files.forEach(file => {
+        this.filesPlugin(this.answers).files.forEach(file => {
             this.fs.copyTpl(
                 this.templatePath(file.src),
                 this.destinationPath(file.dest),
@@ -204,7 +206,7 @@ module.exports = class extends Generator {
 
         // Copy the main plugin directories. 
 		this.log( chalk.green( 'Moving Plugin files' ) );
-        this.dirsPluginTpl.files.forEach(file => {
+        this.dirsPluginTpl(this.answers).files.forEach(file => {
             this.fs.copyTpl(
                 this.templatePath(file.src),
                 this.destinationPath(file.dest),

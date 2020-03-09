@@ -1,8 +1,8 @@
-module.exports = {
+module.exports = function( answers ) {
     files: [
      	{
             src: 'plugin.php',
-            dest: this.answers.slug + '.php'
+            dest: answers.slug + '.php'
         },
         {
             src: 'uninstall.php',
