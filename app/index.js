@@ -6,6 +6,12 @@ var fs = require('fs');
 var request = require( 'request' );
 var child_process = require('child_process');
 
+// Config files 
+const filesDev = require('./config/_filesDev')
+const filesPlugin = require('./config/_filesPlugin')
+const dirsPluginTpl = require('./config/_dirsPluginTpl')
+const filesTests = require('./config/_filesTests')
+
 module.exports = class extends Generator {
   // The name `constructor` is important here
   constructor(args, opts) {
@@ -65,7 +71,7 @@ module.exports = class extends Generator {
 
 		// Have Yeoman greet the user.
 		this.log( yosay(
-		  'Welcome to the sweet ' + chalk.red('Plugin Scaffold') + ' generator!'
+		  'Welcome to the WordPress ' + chalk.red('Plugin Scaffold') + ' generator!'
 		));
 
 		// Set up all our prompts.
@@ -172,95 +178,40 @@ module.exports = class extends Generator {
 
 		this.log( chalk.green( 'Creating plugin directory...' ) );
 
-		// Set our destination to our slug.
+		// Set our plugin dir destination to our slug.
 		this.destinationRoot( this.answers.slug );
 
-		// Copy the .files.  
-		this.log( chalk.green( 'copying dot files...' ) );
-		this.fs.copy(
-			this.templatePath('_babelrc'),
-			this.destinationPath('.babel')
-		);
-		this.fs.copyTpl(
-			this.templatePath('_gitignore'),
-			this.destinationPath('.gitignore'),
-			this.answers
-		);
-		this.fs.copyTpl(
-		  	this.templatePath('_editorconfig'),
-		  	this.destinationPath('.editorconfig'),
-		  	this.answers
-		);
 
-		 // Copy the dev files 
-		this.log( chalk.green( 'copying dev files...' ) );
-		this.fs.copyTpl(
-			this.templatePath('package.json'),
-			this.destinationPath('package.json'),
-			this.answers
-		);
-		this.fs.copyTpl(
-			this.templatePath('composer.json'),
-			this.destinationPath('composer.json'),
-			this.answers
-		);
-		this.fs.copy(
-			this.templatePath('Gulpfile.babel.js'),
-			this.destinationPath('Gulpfile.babel.js')
-		);
-		this.fs.copy(
-			this.templatePath('phpcs.xml'),
-			this.destinationPath('phpcs.xml')
-		);
+		// Dev Files
+        this.logMessage({message: 'Moving Dev Files'})
+        this.filesDev.files.forEach(file => {
+            this.fs.copyTpl(
+                this.templatePath(file.src),
+                this.destinationPath(file.dest),
+                this.answers
+            )
+        })
 
-		// Copy the main plugin file. 
-		this.log( chalk.green( 'copying main plugin file' ) );
-		this.fs.copyTpl(
-			this.templatePath('plugin.php'),
-			this.destinationPath(this.answers.slug + '.php'),
-			this.answers
-		);
+		// Copy the main plugin files. 
+		this.log( chalk.green( 'Moving Plugin files' ) );
+        this.filesPlugin.files.forEach(file => {
+            this.fs.copyTpl(
+                this.templatePath(file.src),
+                this.destinationPath(file.dest),
+                this.answers
+            )
+        })
 
-		// Copy the readme.
-		this.fs.copyTpl(
-			this.templatePath('README.md'),
-			this.destinationPath('README.md'),
-			this.answers
-		);
+        // Copy the main plugin directories. 
+		this.log( chalk.green( 'Moving Plugin files' ) );
+        this.dirsPluginTpl.files.forEach(file => {
+            this.fs.copyTpl(
+                this.templatePath(file.src),
+                this.destinationPath(file.dest),
+                this.answers
+            )
+        })
 
-		// Copy the tests. 
-		this.fs.copy(
-			this.templatePath('phpunit.xml'),
-			this.destinationPath('phpunit.xml'),
-			this.answers
-		);
-		this.fs.copy(
-			this.templatePath('bin/install-wp-tests.sh'),
-			this.destinationPath('bin/install-wp-tests.sh'),
-			this.answers
-		);
-		this.fs.copyTpl(
-			this.templatePath('tests/bootstrap.php'),
-			this.destinationPath('tests/bootstrap.php'),
-			this.answers
-		);
-		this.fs.copyTpl(
-			this.templatePath('tests/test-sample.php'),
-			this.destinationPath('tests/test-sample.php'),
-			this.answers
-		);
 
-		// Copy the directories. 
-		this.fs.copyTpl(
-			this.templatePath('assets/README.md'),
-			this.destinationPath('assets/README.md'),
-			this.answers
-		);
-
-		this.fs.copyTpl(
-			this.templatePath('src'),
-			this.destinationPath('src'),
-			this.answers
-		);
 	}
 };
