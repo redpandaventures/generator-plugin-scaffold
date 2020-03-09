@@ -2,7 +2,7 @@
 /**
  * Class SampleTest
  *
- * @package Plugin_Scaffold
+ * @package <%= namespace %> 
  */
 
 /**
