@@ -1,5 +1,5 @@
 module.exports = {
-    files: [
+    filesTpl: [
      	{
             src: '_babelrc',
             dest: '.babelrc'
@@ -12,13 +12,10 @@ module.exports = {
             src: '_gitignore',
             dest: '.gitignore'
         },
+       
         {
-            src: 'Gulfile.babel.js',
-            dest: 'Gulfile.babel.js'
-        },
-        {
-            src: 'composer.js',
-            dest: 'composer.js'
+            src: 'composer.json',
+            dest: 'composer.json'
         },
        
         {
@@ -36,6 +33,12 @@ module.exports = {
         {
             src: 'README.md',
             dest: 'README.md'
+        },
+    ], 
+    files: [
+         {
+            src: 'Gulpfile.babel.js',
+            dest: 'Gulpfile.babel.js'
         },
     ]
 }

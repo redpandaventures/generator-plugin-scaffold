@@ -1,12 +1,14 @@
 module.exports = function( answers ) {
-    files: [
+    return { 
+        files: [
         {
             src: 'tests/test-sample.php',
-            dest: 'test-' + answers.slug + 'php'
+            dest: 'tests/test-' + answers.slug + 'php'
         },
         {
-            src: 'src',
-            dest: 'src'
+            src: 'tests/bootstrap.php',
+            dest: 'tests/bootstrap.php'
         },
-    ]
+        ]
+    }
 }

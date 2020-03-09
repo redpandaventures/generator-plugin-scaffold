@@ -8,5 +8,9 @@ module.exports = {
             src: 'src',
             dest: 'src'
         },
+         {
+            src: 'bin',
+            dest: 'bin'
+        },
     ]
 }

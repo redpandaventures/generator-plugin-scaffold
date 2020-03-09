@@ -1,6 +1,7 @@
 module.exports = function( answers ) {
-    files: [
-     	{
+    return { 
+        files: [
+        {
             src: 'plugin.php',
             dest: answers.slug + '.php'
         },
@@ -16,6 +17,7 @@ module.exports = function( answers ) {
             src: 'readme.txt',
             dest: 'readme.txt'
         },
-       
-    ]
+        ]
+    }
+    
 }
