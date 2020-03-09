@@ -1,5 +1,5 @@
 /**
- * Admin styles for <%= name %>
+ * Frontend scripts for <%= name %>
  *
  * @package <%= namespace %>
  */

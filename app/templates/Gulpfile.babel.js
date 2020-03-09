@@ -47,7 +47,6 @@ for (let key in _paths)
 		'!node_modules/**/*',
 		'!**/*.min.*',
 		'!Gulpfile.babel.js',
-		'!**/lib/**/*'
 	];
 
 /**
