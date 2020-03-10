@@ -1,18 +1,11 @@
 'use strict';
 
 var path = require('path');
-const assert = require('yeoman-assert')
+const assert = require('yeoman-assert');
 const helpers = require('yeoman-test')
 const fs = require('fs-extra')
 
 // Define some variables
-const project = {
-    name: 'plugin',
-    description: 'A small Test Driven Generator',
-    version: '0.0.1',
-    proxy: 'plugin.test',
-    type: 'wordpress-plugin'
-}
 const author = {
     name: 'Jamie Madden',
     email: 'developer@redpandaventures.com',
