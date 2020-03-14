@@ -24,7 +24,7 @@ npm install -g generator-plugin-scaffold
 To install generator-plugin-scaffold from git, run:
 
 ```bash
-npm install -g git+ssh://git@github.com/redpandaventures/generator-plugin-scaffold
+npm install -g git+https://github.com/redpandaventures/generator-plugin-scaffold
 ```
 
 To use generator-plugin-scaffold, `cd` to your WordPress plugins folder and:
