@@ -11,6 +11,9 @@
  * License URI: <%= licenseuri %>
  * Text Domain: <%= slug %>
  * Domain Path: /languages
+ * 
+ * Requires at least:    <%= wp_requires %> 
+ * Tested up to:         <%= wp_tested %> 
  *
  * @link    <%= homepage %>
  *

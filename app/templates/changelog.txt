@@ -1,1 +1,1 @@
-Change log for <%= name %>
+Changelog for <%= name %>
