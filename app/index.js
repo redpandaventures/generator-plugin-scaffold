@@ -12,6 +12,12 @@ const filesPlugin = require('./config/_filesPlugin');
 const dirsPluginTpl = require('./config/_dirsPluginTpl');
 const filesTests = require('./config/_filesTests');
 
+const licenses = {
+    'GPLv2' : 'http://www.gnu.org/licenses/gpl-2.0.html', 
+    'GPLv3' : 'http://www.gnu.org/licenses/gpl-3.0.html',
+    'All Rights Reserved' : 'http://www.gnu.org/licenses/gpl-2.0.html'
+};
+
 module.exports = class extends Generator {
     // The name `constructor` is important here
     constructor(args, opts) {
@@ -71,6 +77,8 @@ module.exports = class extends Generator {
             'Welcome to the WordPress ' + chalk.red('Plugin Scaffold') + ' generator!'
         ));
 
+        this.log( Object.keys( licenses ) ); 
+
         // Set up all our prompts.
         this.answers = await this.prompt([{
             type: 'input',
@@ -92,7 +100,7 @@ module.exports = class extends Generator {
             type: 'input',
             name: 'version',
             message: 'Version',
-            default: '0.0.0'
+            default: '0.0.1'
         }, {
             type: 'input',
             name: 'author',
@@ -115,17 +123,10 @@ module.exports = class extends Generator {
             save: true,
             store: true
         }, {
-            type: 'input',
+            type: 'list',
             name: 'license',
-            message: 'License',
-            default: 'GPLv2',
-            save: true,
-            store: true
-        }, {
-            type: 'input',
-            name: 'licenseuri',
-            message: 'License URI',
-            default: 'http://www.gnu.org/licenses/gpl-2.0.html',
+            message: 'What License will this code be relased under?',
+            choices: Object.keys( licenses ), 
             save: true,
             store: true
         }, {
@@ -137,6 +138,20 @@ module.exports = class extends Generator {
             store: true
         }, {
             type: 'input',
+            name: 'wp_requires',
+            message: 'WordPress Required version',
+            default: this._getLatestWPVersion(),
+            save: true,
+            store: true
+        }, {
+            type: 'input',
+            name: 'wp_testedto',
+            message: 'WordPress Testd to version',
+            default: this._getLatestWPVersion(),
+            save: true,
+            store: true
+        },{
+            type: 'input',
             name: 'namespace',
             message: 'Namespace',
             default: 'RedPandaVentures',
@@ -145,12 +160,13 @@ module.exports = class extends Generator {
         }, {
             type: 'input',
             name: 'constant',
-            message: 'Constant Variables',
+            message: 'Constant Variable Prefix',
             default: 'SLUG',
             save: true,
             store: true
         }]);
 
+        this.answers.licenseuri = licenses[this.answers.license]; 
         this.answers.descriptionEscaped = this._escapeDoubleQuotes(this.answers.description);
         this.answers.year = new Date().getFullYear();
         this.answers.currentVersionWP = this._getLatestWPVersion();
